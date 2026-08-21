@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<title>CodeMarket</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+    margin:0;
+    background:#070707;
+    color:#fff;
+    font-family:Tahoma,Arial,sans-serif;
+}
+
+.app{
+    width:100%;
+    max-width:560px;
+    margin:auto;
+    padding:18px 15px 90px;
+}
+
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:900;
+}
+
+.logo span{
+    color:#ff3030;
+}
+
+.avatar{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#151515;
+    border:1px solid #292929;
+    overflow:hidden;
+}
+
+.avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:24px;
+    border-radius:26px;
+    border:1px solid #292929;
+    background:
+        radial-gradient(circle at 100% 0,#5b1010 0,transparent 40%),
+        linear-gradient(145deg,#171717,#0d0d0d);
+    margin-bottom:14px;
+}
+
+.hero h1{
+    margin:0 0 7px;
+    font-size:25px;
+}
+
+.hero p{
+    margin:0;
+    color:#999;
+    font-size:12px;
+    line-height:2;
+}
+
+.balance{
+    margin-top:20px;
+    padding:17px;
+    border-radius:18px;
+    background:#090909;
+    border:1px solid #252525;
+}
+
+.balance small{
+    color:#777;
+}
+
+.balance strong{
+    display:block;
+    margin-top:8px;
+    font-size:26px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+}
+
+.card{
+    min-height:132px;
+    padding:19px;
+    border-radius:22px;
+    background:#111;
+    border:1px solid #292929;
+    transition:.15s;
+}
+
+.card:active{
+    transform:scale(.97);
+}
+
+.icon{
+    font-size:29px;
+    margin-bottom:12px;
+}
+
+.card h3{
+    margin:0 0 6px;
+    font-size:15px;
+}
+
+.card p{
+    margin:0;
+    color:#777;
+    font-size:11px;
+    line-height:1.8;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.back{
+    margin-bottom:15px;
+    color:#ff4545;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.box{
+    margin-bottom:12px;
+    padding:20px;
+    border-radius:21px;
+    background:#111;
+    border:1px solid #292929;
+}
+
+.box h2{
+    margin:0 0 17px;
+    font-size:19px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:14px 0;
+    border-bottom:1px solid #222;
+}
+
+.row:last-child{
+    border-bottom:0;
+}
+
+.label{
+    color:#777;
+    font-size:12px;
+}
+
+.value{
+    font-size:12px;
+    font-weight:bold;
+    text-align:left;
+    direction:ltr;
+}
+
+.course{
+    margin-bottom:12px;
+    padding:19px;
+    border-radius:20px;
+    background:#111;
+    border:1px solid #292929;
+}
+
+.course h3{
+    margin:0 0 8px;
+}
+
+.course p{
+    margin:0;
+    color:#888;
+    font-size:12px;
+    line-height:1.9;
+}
+
+.price{
+    margin-top:12px;
+    color:#ff4141;
+    font-weight:bold;
+}
+
+.ref{
+    margin-top:15px;
+    padding:14px;
+    border-radius:14px;
+    background:#080808;
+    border:1px dashed #444;
+    color:#aaa;
+    font-size:11px;
+    direction:ltr;
+    word-break:break-all;
+}
+
+.status{
+    margin-top:20px;
+    text-align:center;
+    color:#666;
+    font-size:10px;
+}
+
+.empty{
+    padding:25px 5px;
+    text-align:center;
+    color:#777;
+}
+
+.loading{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#070707;
+    transition:.3s;
+}
+
+.loading.hide{
+    opacity:0;
+    pointer-events:none;
+}
+
+.loader{
+    text-align:center;
+}
+
+.loader-logo{
+    font-size:28px;
+    font-weight:900;
+}
+
+.loader-logo span{
+    color:#ff3030;
+}
+
+.spinner{
+    width:32px;
+    height:32px;
+    margin:20px auto;
+    border:3px solid #292929;
+    border-top-color:#ff3030;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+</style>
+</head>
+
+<body>
+
+<div id="loading" class="loading">
+    <div class="loader">
+        <div class="loader-logo">Code<span>Market</span></div>
+        <div class="spinner"></div>
+        <div id="loadingText">در حال اتصال...</div>
+    </div>
+</div>
+
+<div class="app">
+
+<header class="header">
+    <div class="logo">Code<span>Market</span></div>
+    <div id="avatar" class="avatar">👤</div>
+</header>
+
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+    <div class="hero">
+
+        <h1 id="welcome">سلام 👋</h1>
+
+        <p>
+            به پنل CodeMarket خوش آمدی.
+            اطلاعات حساب تو از دیتابیس دریافت می‌شود.
+        </p>
+
+        <div class="balance">
+            <small>موجودی کیف پول</small>
+            <strong id="homeBalance">۰ تومان</strong>
+        </div>
+
+    </div>
+
+    <div class="grid">
+
+        <div class="card" onclick="openPage('profile')">
+            <div class="icon">👤</div>
+            <h3>پروفایل</h3>
+            <p>اطلاعات حساب و وضعیت کاربر</p>
+        </div>
+
+        <div class="card" onclick="openPage('wallet')">
+            <div class="icon">💰</div>
+            <h3>کیف پول</h3>
+            <p>موجودی و تراکنش‌ها</p>
+        </div>
+
+        <div class="card" onclick="openPage('courses')">
+            <div class="icon">📚</div>
+            <h3>دوره‌ها</h3>
+            <p>دوره‌های آموزشی CodeMarket</p>
+        </div>
+
+        <div class="card" onclick="openPage('marketing')">
+            <div class="icon">📣</div>
+            <h3>بازاریابی</h3>
+            <p>دعوت دوستان و درآمد</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section id="profile" class="page">
+
+    <div class="back" onclick="openPage('home')">
+        ← برگشت
+    </div>
+
+    <div class="box">
+
+        <h2>👤 پروفایل من</h2>
+
+        <div class="row">
+            <span class="label">نام</span>
+            <span id="pName" class="value">---</span>
+        </div>
+
+        <div class="row">
+            <span class="label">نام کاربری</span>
+            <span id="pUsername" class="value">---</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Telegram ID</span>
+            <span id="pTelegramId" class="value">---</span>
+        </div>
+
+        <div class="row">
+            <span class="label">شناسه CodeMarket</span>
+            <span id="pUserId" class="value">---</span>
+        </div>
+
+        <div class="row">
+            <span class="label">موجودی</span>
+            <span id="pBalance" class="value">۰ تومان</span>
+        </div>
+
+        <div class="row">
+            <span class="label">تعداد دعوت</span>
+            <span id="pReferrals" class="value">۰</span>
+        </div>
+
+        <div class="row">
+            <span class="label">درآمد</span>
+            <span id="pIncome" class="value">۰ تومان</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- WALLET -->
+
+<section id="wallet" class="page">
+
+    <div class="back" onclick="openPage('home')">
+        ← برگشت
+    </div>
+
+    <div class="box">
+
+        <h2>💰 کیف پول</h2>
+
+        <div class="row">
+            <span class="label">موجودی فعلی</span>
+            <span id="wBalance" class="value">۰ تومان</span>
+        </div>
+
+        <div class="empty">
+            سیستم شارژ و برداشت را در مرحله بعد اضافه می‌کنیم.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- COURSES -->
+
+<section id="courses" class="page">
+
+    <div class="back" onclick="openPage('home')">
+        ← برگشت
+    </div>
+
+    <div id="courseList"></div>
+
+</section>
+
+
+<!-- MARKETING -->
+
+<section id="marketing" class="page">
+
+    <div class="back" onclick="openPage('home')">
+        ← برگشت
+    </div>
+
+    <div class="box">
+
+        <h2>📣 بازاریابی</h2>
+
+        <div class="row">
+            <span class="label">دعوت‌ها</span>
+            <span id="mReferrals" class="value">۰</span>
+        </div>
+
+        <div class="row">
+            <span class="label">درآمد</span>
+            <span id="mIncome" class="value">۰ تومان</span>
+        </div>
+
+        <div id="refLink" class="ref">
+            در حال ساخت لینک...
+        </div>
+
+    </div>
+
+</section>
+
+
+<div id="status" class="status">
+    در حال اتصال...
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   TELEGRAM
+========================================= */
+
+const tg =
+    window.Telegram &&
+    window.Telegram.WebApp
+        ? window.Telegram.WebApp
+        : null;
+
+if(tg){
+    tg.ready();
+    tg.expand();
+}
+
+
+/* =========================================
+   JSONBIN
+========================================= */
+
+const BIN_ID = "6a7c9196da38895dfedb3f3d";
+
+const API_KEY =
+"$2a$10$z0tbkrG1XSrlThC8w.TftettTicBFDK2UkGHYoh87H0I6rKtpmcvq";
+
+const BIN_URL =
+"https://api.jsonbin.io/v3/b/" + BIN_ID;
+
+
+/* =========================================
+   DATABASE
+========================================= */
+
+let database = {
+    users: [],
+    courses: [],
+    transactions: [],
+    referrals: [],
+    marketing: [],
+    settings: {}
+};
+
+let currentUser = null;
+
+
+/* =========================================
+   TELEGRAM USER
+========================================= */
+
+function getTelegramUser(){
+
+    if(
+        tg &&
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user
+    ){
+        return tg.initDataUnsafe.user;
+    }
+
+    return {
+        id:"browser-test",
+        first_name:"کاربر تستی",
+        last_name:"",
+        username:""
+    };
+}
+
+const telegramUser = getTelegramUser();
+
+
+/* =========================================
+   FORMAT
+========================================= */
+
+function money(number){
+
+    return Number(number || 0)
+        .toLocaleString("fa-IR")
+        + " تومان";
+
+}
+
+
+/* =========================================
+   LOAD JSONBIN
+========================================= */
+
+async function loadDatabase(){
+
+    setStatus("در حال دریافت اطلاعات...");
+
+    try{
+
+        const response = await fetch(
+            BIN_URL + "/latest",
+            {
+                method:"GET",
+                headers:{
+                    "X-Access-Key":API_KEY
+                }
+            }
+        );
+
+        const text = await response.text();
+
+        if(!response.ok){
+            throw new Error(text);
+        }
+
+        const result = JSON.parse(text);
+
+        if(result.record){
+            database = result.record;
+        }
+
+        normalize();
+
+        await findOrCreateUser();
+
+        render();
+
+        setStatus("● اتصال موفق");
+
+        document.getElementById("status").style.color =
+            "#42d77d";
+
+        hideLoading();
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus("❌ اتصال به دیتابیس ناموفق بود");
+
+        document.getElementById("status").style.color =
+            "#ff4444";
+
+        document.getElementById("loadingText").textContent =
+            "خطا در اتصال";
+
+    }
+
+}
+
+
+/* =========================================
+   NORMALIZE
+========================================= */
+
+function normalize(){
+
+    if(!Array.isArray(database.users))
+        database.users = [];
+
+    if(!Array.isArray(database.courses))
+        database.courses = [];
+
+    if(!Array.isArray(database.transactions))
+        database.transactions = [];
+
+    if(!Array.isArray(database.referrals))
+        database.referrals = [];
+
+    if(!Array.isArray(database.marketing))
+        database.marketing = [];
+
+    if(!database.settings)
+        database.settings = {};
+
+}
+
+
+/* =========================================
+   FIND OR CREATE USER
+========================================= */
+
+async function findOrCreateUser(){
+
+    const id = String(telegramUser.id);
+
+    currentUser = database.users.find(
+        user =>
+            String(user.telegramId) === id
+    );
+
+    if(currentUser){
+
+        /*
+         * اطلاعات متغیر تلگرام را به‌روزرسانی می‌کنیم
+         */
+
+        currentUser.firstName =
+            telegramUser.first_name ||
+            currentUser.firstName ||
+            "کاربر";
+
+        currentUser.lastName =
+            telegramUser.last_name ||
+            currentUser.lastName ||
+            "";
+
+        currentUser.username =
+            telegramUser.username ||
+            currentUser.username ||
+            "";
+
+        await saveDatabase();
+
+        return;
+    }
+
+
+    currentUser = {
+
+        id:"USER-" + id,
+
+        telegramId:id,
+
+        firstName:
+            telegramUser.first_name || "کاربر",
+
+        lastName:
+            telegramUser.last_name || "",
+
+        username:
+            telegramUser.username || "",
+
+        balance:0,
+
+        referrals:0,
+
+        income:0,
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+    database.users.push(
+        currentUser
+    );
+
+
+    await saveDatabase();
+
+}
+
+
+/* =========================================
+   SAVE
+========================================= */
+
+async function saveDatabase(){
+
+    try{
+
+        const response = await fetch(
+            BIN_URL,
+            {
+                method:"PUT",
+
+                headers:{
+                    "Content-Type":
+                        "application/json",
+
+                    "X-Access-Key":
+                        API_KEY
+                },
+
+                body:
+                    JSON.stringify(database)
+            }
+        );
+
+        const text =
+            await response.text();
+
+        if(!response.ok){
+
+            console.error(
+                "JSONBin SAVE ERROR:",
+                text
+            );
+
+            return false;
+        }
+
+        console.log(
+            "JSONBin saved successfully"
+        );
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "SAVE ERROR:",
+            error
+        );
+
+        return false;
+    }
+
+}
+
+
+/* =========================================
+   RENDER
+========================================= */
+
+function render(){
+
+    const fullName =
+        (
+            currentUser.firstName +
+            " " +
+            currentUser.lastName
+        ).trim();
+
+
+    document.getElementById(
+        "welcome"
+    ).textContent =
+        "سلام " +
+        (
+            currentUser.firstName ||
+            "کاربر"
+        ) +
+        " 👋";
+
+
+    document.getElementById(
+        "homeBalance"
+    ).textContent =
+        money(currentUser.balance);
+
+
+    document.getElementById(
+        "pName"
+    ).textContent =
+        fullName;
+
+
+    document.getElementById(
+        "pUsername"
+    ).textContent =
+        currentUser.username
+            ? "@" + currentUser.username
+            : "ندارد";
+
+
+    document.getElementById(
+        "pTelegramId"
+    ).textContent =
+        currentUser.telegramId;
+
+
+    document.getElementById(
+        "pUserId"
+    ).textContent =
+        currentUser.id;
+
+
+    document.getElementById(
+        "pBalance"
+    ).textContent =
+        money(currentUser.balance);
+
+
+    document.getElementById(
+        "wBalance"
+    ).textContent =
+        money(currentUser.balance);
+
+
+    document.getElementById(
+        "pReferrals"
+    ).textContent =
+        Number(currentUser.referrals || 0)
+        .toLocaleString("fa-IR");
+
+
+    document.getElementById(
+        "pIncome"
+    ).textContent =
+        money(currentUser.income);
+
+
+    document.getElementById(
+        "mReferrals"
+    ).textContent =
+        Number(currentUser.referrals || 0)
+        .toLocaleString("fa-IR");
+
+
+    document.getElementById(
+        "mIncome"
+    ).textContent =
+        money(currentUser.income);
+
+
+    renderReferral();
+
+    renderCourses();
+
+}
+
+
+/* =========================================
+   REFERRAL
+========================================= */
+
+function renderReferral(){
+
+    let botUsername = "YourBot";
+
+    const link =
+        "https://t.me/" +
+        botUsername +
+        "?start=ref_" +
+        currentUser.telegramId;
+
+    document.getElementById(
+        "refLink"
+    ).textContent =
+        link;
+
+}
+
+
+/* =========================================
+   COURSES
+========================================= */
+
+function renderCourses(){
+
+    const list =
+        document.getElementById(
+            "courseList"
+        );
+
+    list.innerHTML = "";
+
+
+    if(
+        !database.courses.length
+    ){
+
+        list.innerHTML = `
+
+            <div class="box">
+
+                <div class="empty">
+
+                    📚 هنوز دوره‌ای
+                    ثبت نشده است.
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    database.courses.forEach(
+        course => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "course";
+
+
+            item.innerHTML = `
+
+                <h3>
+                    ${escapeHTML(
+                        course.title || "دوره"
+                    )}
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        course.description || ""
+                    )}
+                </p>
+
+                <div class="price">
+
+                    ${money(
+                        course.price || 0
+                    )}
+
+                </div>
+
+            `;
+
+
+            list.appendChild(item);
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function openPage(page){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            element =>
+                element.classList.remove(
+                    "active"
+                )
+        );
+
+
+    const target =
+        document.getElementById(page);
+
+
+    if(target){
+        target.classList.add(
+            "active"
+        );
+    }
+
+
+    if(tg){
+        tg.BackButton.show();
+
+        tg.BackButton.onClick(
+            () => openPage("home")
+        );
+    }
+
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+function setStatus(text){
+
+    document.getElementById(
+        "status"
+    ).textContent = text;
+
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+function hideLoading(){
+
+    setTimeout(
+        () => {
+
+            document
+                .getElementById("loading")
+                .classList.add("hide");
+
+        },
+        300
+    );
+
+}
+
+
+/* =========================================
+   SECURITY
+========================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+loadDatabase();
+
+</script>
+
+</body>
+</html>
