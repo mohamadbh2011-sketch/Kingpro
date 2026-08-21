@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>CodeMarket</title>
+
+
+<!-- Telegram Web App -->
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+
+    min-height:100vh;
+
+    background:#080808;
+
+    color:#fff;
+
+    font-family:
+        Tahoma,
+        Arial,
+        sans-serif;
+}
+
+
+.app{
+
+    max-width:520px;
+
+    margin:auto;
+
+    padding:20px 16px 40px;
+}
+
+
+.header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+}
+
+
+.logo{
+
+    font-size:25px;
+
+    font-weight:900;
+}
+
+
+.logo span{
+
+    color:#ff3030;
+}
+
+
+.telegram-user{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#181818;
+
+    border:1px solid #303030;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+    font-size:20px;
+}
+
+
+.hero{
+
+    background:
+
+        radial-gradient(
+            circle at top right,
+            #421010,
+            transparent 45%
+        ),
+
+        linear-gradient(
+            145deg,
+            #181818,
+            #0d0d0d
+        );
+
+    border:
+
+        1px solid
+        #292929;
+
+    border-radius:25px;
+
+    padding:25px;
+
+    margin-bottom:15px;
+}
+
+
+.hero h1{
+
+    margin:0 0 8px;
+
+    font-size:26px;
+}
+
+
+.hero p{
+
+    color:#999;
+
+    font-size:13px;
+
+    line-height:2;
+}
+
+
+.balance{
+
+    margin-top:20px;
+
+    padding:18px;
+
+    background:#090909;
+
+    border:1px solid #262626;
+
+    border-radius:18px;
+}
+
+
+.balance small{
+
+    color:#777;
+}
+
+
+.balance strong{
+
+    display:block;
+
+    margin-top:8px;
+
+    font-size:25px;
+}
+
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:12px;
+}
+
+
+.card{
+
+    background:#111;
+
+    border:1px solid #292929;
+
+    border-radius:21px;
+
+    padding:20px;
+
+    min-height:130px;
+
+    cursor:pointer;
+}
+
+
+.card:active{
+
+    transform:scale(.97);
+}
+
+
+.icon{
+
+    font-size:30px;
+
+    margin-bottom:12px;
+}
+
+
+.card h3{
+
+    margin:0 0 7px;
+
+    font-size:15px;
+}
+
+
+.card p{
+
+    margin:0;
+
+    color:#777;
+
+    font-size:11px;
+
+    line-height:1.8;
+}
+
+
+.section{
+
+    display:none;
+}
+
+
+.section.active{
+
+    display:block;
+}
+
+
+.back{
+
+    color:#ff4444;
+
+    margin-bottom:18px;
+
+    cursor:pointer;
+}
+
+
+.box{
+
+    background:#111;
+
+    border:1px solid #292929;
+
+    border-radius:21px;
+
+    padding:20px;
+
+    margin-bottom:12px;
+}
+
+
+.box h2{
+
+    margin:0 0 16px;
+
+    font-size:19px;
+}
+
+
+.row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:13px 0;
+
+    border-bottom:
+        1px solid
+        #222;
+}
+
+
+.row:last-child{
+
+    border-bottom:0;
+}
+
+
+.label{
+
+    color:#777;
+
+    font-size:13px;
+}
+
+
+.value{
+
+    font-size:13px;
+
+    font-weight:bold;
+}
+
+
+.course{
+
+    background:#111;
+
+    border:1px solid #292929;
+
+    border-radius:20px;
+
+    padding:18px;
+
+    margin-bottom:12px;
+}
+
+
+.course h3{
+
+    margin:0 0 8px;
+}
+
+
+.course p{
+
+    color:#888;
+
+    font-size:12px;
+
+    line-height:1.8;
+}
+
+
+.price{
+
+    color:#ff4141;
+
+    margin-top:10px;
+
+    font-weight:bold;
+}
+
+
+.empty{
+
+    color:#777;
+
+    text-align:center;
+
+    padding:30px 10px;
+}
+
+
+.referral{
+
+    background:#090909;
+
+    border:1px dashed #444;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    direction:ltr;
+
+    word-break:break-all;
+
+    color:#aaa;
+
+    font-size:12px;
+
+    margin-top:15px;
+}
+
+
+button{
+
+    width:100%;
+
+    border:0;
+
+    padding:14px;
+
+    margin-top:10px;
+
+    border-radius:15px;
+
+    background:#e52d2d;
+
+    color:#fff;
+
+    font-size:14px;
+}
+
+
+.status{
+
+    text-align:center;
+
+    color:#777;
+
+    font-size:11px;
+
+    margin-top:25px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<header class="header">
+
+    <div class="logo">
+
+        Code<span>Market</span>
+
+    </div>
+
+
+    <div
+        id="userAvatar"
+        class="telegram-user"
+    >
+
+        👤
+
+    </div>
+
+</header>
+
+
+<!-- HOME -->
+
+<section
+    id="home"
+    class="section active"
+>
+
+
+    <div class="hero">
+
+        <h1 id="welcome">
+
+            سلام 👋
+
+        </h1>
+
+
+        <p>
+
+            به CodeMarket خوش آمدی.
+
+            دوره‌ها، کیف پول و
+            سیستم بازاریابی از همین‌جا
+            در دسترس تو هستند.
+
+        </p>
+
+
+        <div class="balance">
+
+            <small>
+
+                موجودی کیف پول
+
+            </small>
+
+
+            <strong id="balance">
+
+                ۰ تومان
+
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="grid">
+
+
+        <div
+            class="card"
+            onclick="showSection('profile')"
+        >
+
+            <div class="icon">
+                👤
+            </div>
+
+            <h3>
+                پروفایل
+            </h3>
+
+            <p>
+                اطلاعات حساب
+            </p>
+
+        </div>
+
+
+
+        <div
+            class="card"
+            onclick="showSection('wallet')"
+        >
+
+            <div class="icon">
+                💰
+            </div>
+
+            <h3>
+                کیف پول
+            </h3>
+
+            <p>
+                موجودی و تراکنش‌ها
+            </p>
+
+        </div>
+
+
+
+        <div
+            class="card"
+            onclick="showSection('courses')"
+        >
+
+            <div class="icon">
+                📚
+            </div>
+
+            <h3>
+                دوره‌ها
+            </h3>
+
+            <p>
+                دوره‌های آموزشی
+            </p>
+
+        </div>
+
+
+
+        <div
+            class="card"
+            onclick="showSection('marketing')"
+        >
+
+            <div class="icon">
+                📣
+            </div>
+
+            <h3>
+                بازاریابی
+            </h3>
+
+            <p>
+                دعوت و درآمد
+            </p>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- PROFILE -->
+
+<section
+    id="profile"
+    class="section"
+>
+
+
+    <div
+        class="back"
+        onclick="showSection('home')"
+    >
+
+        ← برگشت
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>
+            👤 پروفایل
+        </h2>
+
+
+        <div class="row">
+
+            <span class="label">
+                نام
+            </span>
+
+            <span
+                id="profileName"
+                class="value"
+            >
+                ---
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                نام کاربری
+            </span>
+
+            <span
+                id="profileUsername"
+                class="value"
+            >
+                ---
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                Telegram ID
+            </span>
+
+            <span
+                id="profileId"
+                class="value"
+            >
+                ---
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                موجودی
+            </span>
+
+            <span
+                id="profileBalance"
+                class="value"
+            >
+                ۰ تومان
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                دعوت‌ها
+            </span>
+
+            <span
+                id="profileReferrals"
+                class="value"
+            >
+                ۰
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- WALLET -->
+
+<section
+    id="wallet"
+    class="section"
+>
+
+
+    <div
+        class="back"
+        onclick="showSection('home')"
+    >
+
+        ← برگشت
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>
+            💰 کیف پول
+        </h2>
+
+
+        <div class="row">
+
+            <span class="label">
+                موجودی
+            </span>
+
+            <span
+                id="walletBalance"
+                class="value"
+            >
+                ۰ تومان
+            </span>
+
+        </div>
+
+
+        <div class="empty">
+
+            سیستم کیف پول
+            در مرحله بعد اضافه می‌شود.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- COURSES -->
+
+<section
+    id="courses"
+    class="section"
+>
+
+
+    <div
+        class="back"
+        onclick="showSection('home')"
+    >
+
+        ← برگشت
+
+    </div>
+
+
+    <div
+        id="coursesContainer"
+    >
+
+    </div>
+
+</section>
+
+
+
+<!-- MARKETING -->
+
+<section
+    id="marketing"
+    class="section"
+>
+
+
+    <div
+        class="back"
+        onclick="showSection('home')"
+    >
+
+        ← برگشت
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>
+            📣 بازاریابی
+        </h2>
+
+
+        <div class="row">
+
+            <span class="label">
+                دعوت‌ها
+            </span>
+
+            <span
+                id="referrals"
+                class="value"
+            >
+                ۰
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                درآمد
+            </span>
+
+            <span
+                id="income"
+                class="value"
+            >
+                ۰ تومان
+            </span>
+
+        </div>
+
+
+        <div
+            id="referralLink"
+            class="referral"
+        >
+
+            --
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div
+    id="connectionStatus"
+    class="status"
+>
+
+    در حال اتصال...
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================
+   TELEGRAM
+===================================== */
+
+const tg =
+    window.Telegram &&
+    window.Telegram.WebApp
+        ?
+        window.Telegram.WebApp
+        :
+        null;
+
+
+if(tg){
+
+    tg.ready();
+
+    tg.expand();
+
+}
+
+
+/* =====================================
+   JSONBIN
+===================================== */
+
+const BIN_ID =
+    "6a7c9196da38895dfedb3f3d";
+
+
+const API_KEY =
+    "$2a$10$z0tbkrG1XSrlThC8w.TftettTicBFDK2UkGHYoh87H0I6rKtpmcvq";
+
+
+const BIN_URL =
+    "https://api.jsonbin.io/v3/b/"
+    +
+    BIN_ID;
+
+
+
+/* =====================================
+   DATABASE
+===================================== */
+
+let database = {
+
+    users: [],
+
+    courses: [],
+
+    transactions: [],
+
+    referrals: [],
+
+    marketing: [],
+
+    settings: {}
+
+};
+
+
+
+/* =====================================
+   TELEGRAM USER
+===================================== */
+
+function getTelegramUser(){
+
+    if(
+        tg &&
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user
+    ){
+
+        return tg.initDataUnsafe.user;
+
+    }
+
+
+    return {
+
+        id:
+            "browser-test",
+
+        first_name:
+            "کاربر تستی",
+
+        username:
+            ""
+
+    };
+
+}
+
+
+
+/* =====================================
+   CURRENT USER
+===================================== */
+
+const telegramUser =
+    getTelegramUser();
+
+
+let currentUser = null;
+
+
+
+/* =====================================
+   LOAD DATABASE
+===================================== */
+
+async function loadDatabase(){
+
+    const status =
+        document.getElementById(
+            "connectionStatus"
+        );
+
+
+    status.textContent =
+        "در حال اتصال به JSONBin...";
+
+
+    try{
+
+
+        const response =
+            await fetch(
+                BIN_URL + "/latest",
+                {
+
+                    method:"GET",
+
+                    headers:{
+
+                        "X-Access-Key":
+                            API_KEY
+
+                    }
+
+                }
+            );
+
+
+        const text =
+            await response.text();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                text
+            );
+
+        }
+
+
+        const result =
+            JSON.parse(
+                text
+            );
+
+
+        if(result.record){
+
+            database =
+                result.record;
+
+        }
+
+
+        normalizeDatabase();
+
+
+        findOrCreateUser();
+
+
+        render();
+
+
+        status.textContent =
+            "● متصل به JSONBin";
+
+        status.style.color =
+            "#42d77d";
+
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+
+        status.textContent =
+            "❌ خطا در اتصال";
+
+        status.style.color =
+            "#ff4444";
+
+    }
+
+}
+
+
+
+/* =====================================
+   NORMALIZE
+===================================== */
+
+function normalizeDatabase(){
+
+    if(
+        !Array.isArray(
+            database.users
+        )
+    ){
+
+        database.users = [];
+
+    }
+
+
+    if(
+        !Array.isArray(
+            database.courses
+        )
+    ){
+
+        database.courses = [];
+
+    }
+
+
+    if(
+        !Array.isArray(
+            database.transactions
+        )
+    ){
+
+        database.transactions = [];
+
+    }
+
+
+    if(
+        !Array.isArray(
+            database.referrals
+        )
+    ){
+
+        database.referrals = [];
+
+    }
+
+
+    if(
+        !Array.isArray(
+            database.marketing
+        )
+    ){
+
+        database.marketing = [];
+
+    }
+
+}
+
+
+
+/* =====================================
+   FIND / CREATE USER
+===================================== */
+
+function findOrCreateUser(){
+
+    const telegramId =
+        String(
+            telegramUser.id
+        );
+
+
+    currentUser =
+        database.users.find(
+            function(user){
+
+                return String(
+                    user.telegramId
+                )
+                ===
+                telegramId;
+
+            }
+        );
+
+
+    if(!currentUser){
+
+        currentUser = {
+
+            id:
+                "USER-" +
+                telegramId,
+
+            telegramId:
+                telegramId,
+
+            firstName:
+                telegramUser.first_name ||
+                "کاربر",
+
+            lastName:
+                telegramUser.last_name ||
+                "",
+
+            username:
+                telegramUser.username ||
+                "",
+
+            balance:
+                0,
+
+            referrals:
+                0,
+
+            income:
+                0,
+
+            createdAt:
+                new Date()
+                    .toISOString()
+
+        };
+
+
+        database.users.push(
+            currentUser
+        );
+
+
+        saveDatabase();
+
+    }
+
+}
+
+
+
+/* =====================================
+   SAVE DATABASE
+===================================== */
+
+async function saveDatabase(){
+
+    try{
+
+        const response =
+            await fetch(
+                BIN_URL,
+                {
+
+                    method:"PUT",
+
+                    headers:{
+
+                        "Content-Type":
+                            "application/json",
+
+                        "X-Access-Key":
+                            API_KEY
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            database
+                        )
+
+                }
+            );
+
+
+        const text =
+            await response.text();
+
+
+        if(!response.ok){
+
+            console.error(
+                "SAVE ERROR:",
+                text
+            );
+
+            return false;
+
+        }
+
+
+        console.log(
+            "Database saved"
+        );
+
+
+        return true;
+
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+
+/* =====================================
+   RENDER
+===================================== */
+
+function render(){
+
+    const name =
+        currentUser.firstName ||
+        "کاربر";
+
+
+    document.getElementById(
+        "welcome"
+    ).textContent =
+        "سلام " +
+        name +
+        " 👋";
+
+
+    document.getElementById(
+        "profileName"
+    ).textContent =
+        (
+            currentUser.firstName +
+            " " +
+            currentUser.lastName
+        ).trim();
+
+
+    document.getElementById(
+        "profileUsername"
+    ).textContent =
+        currentUser.username
+            ?
+            "@" +
+            currentUser.username
+            :
+            "ندارد";
+
+
+    document.getElementById(
+        "profileId"
+    ).textContent =
+        currentUser.telegramId;
+
+
+    document.getElementById(
+        "balance"
+    ).textContent =
+        money(
+            currentUser.balance
+        );
+
+
+    document.getElementById(
+        "profileBalance"
+    ).textContent =
+        money(
+            currentUser.balance
+        );
+
+
+    document.getElementById(
+        "walletBalance"
+    ).textContent =
+        money(
+            currentUser.balance
+        );
+
+
+    document.getElementById(
+        "profileReferrals"
+    ).textContent =
+        currentUser.referrals || 0;
+
+
+    document.getElementById(
+        "referrals"
+    ).textContent =
+        currentUser.referrals || 0;
+
+
+    document.getElementById(
+        "income"
+    ).textContent =
+        money(
+            currentUser.income
+        );
+
+
+    document.getElementById(
+        "referralLink"
+    ).textContent =
+        "https://t.me/YourBot?start=ref_"
+        +
+        currentUser.telegramId;
+
+
+    renderCourses();
+
+}
+
+
+
+/* =====================================
+   MONEY
+===================================== */
+
+function money(value){
+
+    return Number(
+        value || 0
+    ).toLocaleString(
+        "fa-IR"
+    )
+    +
+    " تومان";
+
+}
+
+
+
+/* =====================================
+   COURSES
+===================================== */
+
+function renderCourses(){
+
+    const container =
+        document.getElementById(
+            "coursesContainer"
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    if(
+        database.courses.length === 0
+    ){
+
+        container.innerHTML = `
+
+            <div class="box">
+
+                <div class="empty">
+
+                    📚 هنوز دوره‌ای
+                    ثبت نشده است.
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    database.courses.forEach(
+        function(course){
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "course";
+
+
+            div.innerHTML = `
+
+                <h3>
+                    ${escapeHTML(
+                        course.title ||
+                        "دوره"
+                    )}
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        course.description ||
+                        ""
+                    )}
+                </p>
+
+                <div class="price">
+                    ${money(
+                        course.price || 0
+                    )}
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =====================================
+   NAVIGATION
+===================================== */
+
+function showSection(id){
+
+    document
+        .querySelectorAll(
+            ".section"
+        )
+        .forEach(
+            function(section){
+
+                section.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const target =
+        document.getElementById(
+            id
+        );
+
+
+    if(target){
+
+        target.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+
+/* =====================================
+   ESCAPE HTML
+===================================== */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =====================================
+   START
+===================================== */
+
+loadDatabase();
+
+
+</script>
+
+</body>
+
+</html>
